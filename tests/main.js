@@ -4,15 +4,15 @@ import { test_suite_new, test_suite_run } from 'test-suite'
 let suite = test_suite_new()
 let { it } = suite
 
-it('one', function() {
+it('first', function() {
 	return true
 })
 
-it('two', function() {
-	return false
+it('second', function() {
+	return true
 })
 
-it('three', function() {
+it('third', function() {
 	return true
 })
 
