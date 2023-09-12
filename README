@@ -2,3 +2,12 @@
 # Callbag Cookbook
 
 - Example ideas: calulator, database, log filters.
+
+# Install
+
+git clone git@github.com:simplygreatwork/callbag-collection.git && \
+git clone git@github.com:simplygreatwork/test_suite.git
+
+# Run
+
+Load the examples in your browser and the view console output.
