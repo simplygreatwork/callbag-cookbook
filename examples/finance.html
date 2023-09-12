@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="user-scalable=1.0,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+		<title>Example</title>
+	</head>
+	<body>
+		<script type="importmap">{"imports": {
+			"callbags-sourced": "../callbags-sourced/module.js",
+			"callbags-original": "../callbags-original/module.js"
+		}}</script>
+		<script type="module">
+			
+			import { pipe } from 'callbags-sourced'
+			import { make_subject } from 'callbags-sourced'
+			import { observe } from 'callbags-sourced'
+			import { combine } from 'callbags-sourced'
+			import { map } from 'callbags-sourced'
+			import { from_iterable } from 'callbags-sourced'
+			import { flatten } from 'callbags-sourced'
+			import { scan } from 'callbags-sourced'
+			import { first } from 'callbags-sourced'
+			import { last } from 'callbags-sourced'
+			import { iterate } from 'callbags-sourced'
+			import { merge } from 'callbags-sourced'
+			import { transform } from 'callbags-original'
+			import { each } from 'callbags-original'
+			import { greet, deliver, terminate } from 'callbags-original'
+			
+			let keys = {}
+			
+			pipe(
+				multiply(
+					value('income_source'),
+					value('income_asset_ratio'),
+					value('income_mine_ratio')
+				),
+				observe(x => { console.log(`income: ${x}`); value('income')(1, x) })
+			)
+			
+			pipe(
+				add(
+					value('expense_checking_accounts'),
+					value('expense_buddy'),
+					value('expense_rent_july'),
+					value('expense_rent_august'),
+					value('expense_laptop'),
+					value('expense_phone')
+				),
+				observe(x => { console.log(`expenses: ${x}`); value('expenses')(1, x) })
+			)
+			
+			pipe(
+				add(
+					value('monthly_rent'),
+					value('monthly_spending')
+				),
+				observe(x => { console.log(`monthly: ${x}`); value('monthly')(1, x) })
+			)
+			
+			pipe(
+				divide(
+					subtract(
+						value('income'),
+						value('expenses'),
+					),
+					value('monthly'),
+				),
+				observe(x => console.log(`month projection: ${x}`))
+			)
+			
+			value('income_source')(deliver, 373000)
+			value('income_asset_ratio')(deliver, 0.5)
+			value('income_mine_ratio')(deliver, 0.5)
+			value('expense_checking_accounts')(deliver, 100)
+			value('expense_buddy')(deliver, 55)
+			value('expense_rent_july')(deliver, 900)
+			value('expense_rent_august')(deliver, 900)
+			value('expense_laptop')(deliver, 2000)
+			value('expense_phone')(deliver, 300)
+			value('monthly_rent')(deliver, 1600)
+			value('monthly_spending')(deliver, 900)
+			value('income_asset_ratio')(deliver, 0.75)
+			value('expense_laptop')(deliver, 2000)
+			value('expense_phone')(deliver, 800)
+			
+			function value(key) {
+				
+				if (! keys[key]) keys[key] = make_subject()
+				return keys[key]
+			}
+			
+			function add() {
+				
+				return pipe(
+					combine(...arguments),
+					map(function(array) {
+						return aggregate(array, (x, each) => x + each)
+					})
+				)
+			}
+			
+			function subtract(a, b) {
+				
+				return pipe(
+					combine(...arguments),
+					map(function(array) {
+						return aggregate(array, (x, each) => x - each)
+					})
+				)
+			}
+			
+			function multiply(a, b) {
+				
+				return pipe(
+					combine(...arguments),
+					map(function(array) {
+						return aggregate(array, (x, each) => x * each)
+					})
+				)
+			}
+			
+			function divide() {
+				
+				return pipe(
+					combine(...arguments),
+					map(function(array) {
+						return aggregate(array, (x, each) => x / each)
+					})
+				)
+			}
+			
+			function aggregate(array, fn) {
+				
+				let previous = array[0]
+				array.forEach(function(each, index) {
+					if (index === 0) return
+					previous = fn(previous, each)
+				})
+				return previous
+			}
+			
+			function add_() {		// to simplify add , try to use merge, flatten, scan? I dunno
+				
+				return pipe(
+					merge(...arguments),
+					scan((prev, x) => prev + x),
+					first(x => x),
+					// last(),
+				)
+			}
+			
+		</script>
+	</body>
+</html>

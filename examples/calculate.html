@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="user-scalable=1.0,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+		<title>Example</title>
+	</head>
+	<body>
+		<script type="importmap">{"imports": {
+			"callbags-sourced": "../callbags-sourced/module.js",
+			"callbags-original": "../callbags-original/module.js"
+		}}</script>
+		<script type="module">
+			
+			import { pipe } from 'callbags-sourced'
+			import { make_subject } from 'callbags-sourced'
+			import { observe } from 'callbags-sourced'
+			import { combine } from 'callbags-sourced'
+			import { map } from 'callbags-sourced'
+			import { greet, deliver, terminate } from 'callbags-original'
+			
+			let a = make_subject()
+			let b = make_subject()
+			let c = make_subject()
+			let d = make_subject()
+			let e = make_subject()
+			
+			let calculation = divide(
+				add(add(a, b), c),
+				add(d, e)
+			)
+			
+			pipe(
+				calculation,
+				observe(value => console.log(`calculated result: ${value}`))
+			)
+			
+			a(deliver, 1)
+			b(deliver, 2)
+			c(deliver, 3)
+			d(deliver, 4)
+			e(deliver, 5)
+			
+			a(deliver, 1)
+			b(deliver, 2)
+			c(deliver, 3)
+			d(deliver, 1)
+			e(deliver, 2)
+			
+			function add(a, b) {
+				
+				return pipe(
+					combine(a, b),
+					map(value => value[0] + value[1])
+				)
+			}
+			
+			function divide(a, b) {
+				
+				return pipe(
+					combine(a, b),
+					map(value => value[0] / value[1])
+				)
+			}
+			
+		</script>
+	</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="user-scalable=1.0,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+		<title>Example</title>
+	</head>
+	<body>
+		<script type="importmap">{"imports": {
+			"callbags-sourced": "../callbags-sourced/module.js",
+			"callbags-original": "../callbags-original/module.js"
+		}}</script>
+		<script type="module">
+			
+			import { pipe } from 'callbags-sourced'
+			import { interval } from 'callbags-sourced'
+			import { take } from 'callbags-sourced'
+			import { map } from 'callbags-sourced'
+			import { each } from 'callbags-original'
+			import { error } from 'callbags-original'
+			import { done } from 'callbags-original'
+			import { consume } from 'callbags-original'
+			import { reverse } from 'callbags-original'
+			
+			let source = pipe(
+				interval(1),
+				take(10),
+				reverse()
+			)
+			
+			consume(pipe(source,
+				each(function(each) {
+					console.log(each)
+				}),
+				error(function(error) {
+					console.error(error)
+				}),
+				done(function(error) {
+					console.log('done')
+				})
+			))
+			
+		</script>
+	</body>
+</html>

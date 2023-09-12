@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="user-scalable=1.0,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+		<title>Example</title>
+	</head>
+	<body>
+		<script type="importmap">{"imports": {
+			"callbags-sourced": "../callbags-sourced/module.js",
+			"callbags-original": "../callbags-original/module.js"
+		}}</script>
+		<script type="module">
+			
+			import { pipe } from 'callbags-sourced'
+			import { make_subject } from 'callbags-sourced'
+			import { observe } from 'callbags-sourced'
+			import { combine } from 'callbags-sourced'
+			import { map } from 'callbags-sourced'
+			import { greet, deliver, terminate } from 'callbags-original'
+			
+			let a = make_subject()
+			let b = make_subject()
+			let c = make_subject()
+			let subtotal = make_subject()
+			let tax = make_subject()
+			let total = make_subject()
+			
+			pipe(
+				combine(a, b, c),
+				map(value => value[0] + value[1] + value[2]),
+				observe(value => subtotal(1, value))
+			)
+			observe(value => console.log(`subtotal: ${value}`))(subtotal)
+			
+			pipe(
+				combine(subtotal, tax),
+				map(value => value[0] * value[1]),
+				observe(value => total(1, value))
+			)
+			observe(value => console.log(`total: ${value}`))(total)
+			
+			tax(1, 1.0825)
+			a(deliver, 2)
+			b(deliver, 2)
+			c(deliver, 2)
+			a(deliver, 3)
+			b(deliver, 3)
+			c(deliver, 3)
+			a(deliver, 4)
+			b(deliver, 4)
+			c(deliver, 4)
+			a(deliver, 5)
+			b(deliver, 5)
+			c(deliver, 5)
+			c(deliver, 500)
+			
+		</script>
+	</body>
+</html>
