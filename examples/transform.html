@@ -7,7 +7,8 @@
 	<body>
 		<script type="importmap">{"imports": {
 			"callbags-sourced": "../callbags-sourced/module.js",
-			"callbags-original": "../callbags-original/module.js"
+			"callbags-original": "../callbags-original/module.js",
+			"html-console": "../../../html-console/module.js"
 		}}</script>
 		<script type="module">
 			
@@ -21,6 +22,9 @@
 			import { done } from 'callbags-original'
 			import { consume } from 'callbags-original'
 			import { greet, deliver, terminate } from 'callbags-sourced'
+			import { console_init } from 'html-console'
+			
+			console_init('body')
 			
 			let source = pipe(
 				interval(10),

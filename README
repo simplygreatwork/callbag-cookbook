@@ -6,6 +6,7 @@
 # Install
 
 git clone git@github.com:simplygreatwork/callbag-cookbook.git && \
+git clone git@github.com:simplygreatwork/html-console.git && \
 git clone git@github.com:simplygreatwork/test_suite.git
 
 # Run

@@ -8,7 +8,8 @@
 	<body>
 		<script type="importmap">{"imports": {
 			"callbags-sourced": "../callbags-sourced/module.js",
-			"callbags-original": "../callbags-original/module.js"
+			"callbags-original": "../callbags-original/module.js",
+			"html-console": "../../../html-console/module.js"
 		}}</script>
 		<script type="module">
 			
@@ -27,6 +28,9 @@
 			import { transform } from 'callbags-original'
 			import { each } from 'callbags-original'
 			import { greet, deliver, terminate } from 'callbags-original'
+			import { console_init } from 'html-console'
+			
+			console_init('body')
 			
 			let keys = {}
 			
