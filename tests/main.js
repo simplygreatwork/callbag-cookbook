@@ -16,6 +16,7 @@ it('third', function() {
 	return true
 })
 
-let result = test_suite_run(suite)
-if (result) console.log(`All tests passed.`)
-else console.log(`Some tests failed.`)
+test_suite_run(suite, function(result) {
+	if (result) console.log(`All tests passed.`)
+	else console.log(`Some tests failed.`)
+})

@@ -1,0 +1,8 @@
+{
+	"imports": {
+		"callbags-sourced": "../callbags-sourced/module.js",
+		"callbags-original": "../callbags-original/module.js",
+		"test-suite": "../test-suite/module.js",
+		"html-console": "../html-console/module.js",
+	}
+}

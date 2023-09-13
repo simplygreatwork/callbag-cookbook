@@ -1,13 +1,15 @@
 
 # Callbag Cookbook
 
-- Example ideas: calculator, database, log filters.
+Example ideas: calculator, database, log filters.
 
 # Install
 
+```
 git clone git@github.com:simplygreatwork/callbag-cookbook.git && \
 git clone git@github.com:simplygreatwork/html-console.git && \
 git clone git@github.com:simplygreatwork/test-suite.git
+```
 
 # Run
 
